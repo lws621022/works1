@@ -21,19 +21,25 @@ h1{
 }
 
 button{
-  margin:5px;
-  padding:8px 12px;
+  width:100px;        /* 原本70 → 改大 */
+  height:50px;        /* 新增高度 */
+  font-size:16px;     /* 字變大 */
+  padding:10px;
   border:none;
-  border-radius:6px;
+  border-radius:10px;
   background:#2563eb;
   color:white;
   cursor:pointer;
+  font-weight:bold;
 }
 
 button:hover{
   background:#1d4ed8;
+  transform:scale(1.05);   /* 滑鼠放上去變大 */
 }
-
+button:active{
+  transform:scale(0.95);   /* 點擊時縮一下 */
+}
 img{
   margin-top:20px;
   max-width:90%;
@@ -50,13 +56,13 @@ img{
 
 <!-- 4135 班 -->
 <div class="section">
-  <h2>4135 班</h2>
+  <h2>一年戊班</h2>
   <div id="class4135"></div>
 </div>
 
 <!-- 4136 班 -->
 <div class="section">
-  <h2>4136 班</h2>
+  <h2>一年己班</h2>
   <div id="class4136"></div>
 </div>
 

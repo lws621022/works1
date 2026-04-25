@@ -1,24 +1,92 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<title>學生作品</title>
+<title>學生作品展示</title>
+
+<style>
+body{
+  font-family: Arial;
+  background:#f3f4f6;
+  text-align:center;
+  padding:20px;
+}
+
+h1{
+  margin-bottom:20px;
+}
+
+.section{
+  margin-bottom:30px;
+}
+
+button{
+  margin:5px;
+  padding:8px 12px;
+  border:none;
+  border-radius:6px;
+  background:#2563eb;
+  color:white;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#1d4ed8;
+}
+
+img{
+  margin-top:20px;
+  max-width:90%;
+  max-height:70vh;
+  border-radius:10px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.2);
+}
+</style>
+
 </head>
 <body>
 
-<h1>學生作品</h1>
+<h1>學生作品展示</h1>
 
-<button onclick="show(413501)">413501</button>
-<button onclick="show(413502)">413502</button>
+<!-- 4135 班 -->
+<div class="section">
+  <h2>4135 班</h2>
+  <div id="class4135"></div>
+</div>
 
-<br><br>
+<!-- 4136 班 -->
+<div class="section">
+  <h2>4136 班</h2>
+  <div id="class4136"></div>
+</div>
 
-<img id="img" width="400">
+<img id="img" src="" alt="請點選學號查看作品">
 
 <script>
+
+// 顯示圖片
 function show(id){
-  document.getElementById("img").src="images/"+id+".png";
+  let folder = id.toString().substring(0,4);
+  document.getElementById("img").src = folder + "/" + id + ".png";
+  document.getElementById("img").alt = id + " 的作品";
 }
+
+// 建立按鈕
+function createButtons(start, end, containerId){
+  let container = document.getElementById(containerId);
+
+  for(let i = start; i <= end; i++){
+    let btn = document.createElement("button");
+    btn.innerText = i;
+    btn.onclick = () => show(i);
+    container.appendChild(btn);
+  }
+}
+
+// 自動產生兩個班級
+createButtons(413501, 413534, "class4135");
+createButtons(413601, 413634, "class4136");
+
 </script>
 
 </body>

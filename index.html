@@ -82,14 +82,38 @@ img{
 
 <script>
 
+// 檢查圖片是否存在
+function checkImage(id, callback){
+  let folder = id.toString().substring(0,4);
+  let img = new Image();
+  img.src = folder + "/" + id + ".png";
+
+  img.onload = () => callback(true);
+  img.onerror = () => callback(false);
+}
+
 // 顯示圖片
 function show(id){
   let folder = id.toString().substring(0,4);
-  document.getElementById("img").src = folder + "/" + id + ".png";
-  document.getElementById("img").alt = id + " 的作品";
+  let path = folder + "/" + id + ".png";
+  let imgTag = document.getElementById("img");
+
+  let testImg = new Image();
+  testImg.src = path;
+
+  testImg.onload = () => {
+    imgTag.src = path;
+    imgTag.alt = id + " 的作品";
+  };
+
+  testImg.onerror = () => {
+    imgTag.src = "";
+    imgTag.alt = "未繳交";
+    alert(id + " 未繳交！");
+  };
 }
 
-// 建立按鈕
+// 建立按鈕 + 檢查是否繳交
 function createButtons(start, end, containerId){
   let container = document.getElementById(containerId);
 
@@ -97,15 +121,23 @@ function createButtons(start, end, containerId){
     let btn = document.createElement("button");
     btn.innerText = i;
     btn.onclick = () => show(i);
+
+    // 檢查是否有圖片
+    checkImage(i, (exists)=>{
+      if(!exists){
+        btn.style.background = "#9ca3af";  // 灰色
+        btn.title = "未繳交";
+      }
+    });
+
     container.appendChild(btn);
   }
 }
 
-// 自動產生兩個班級
+// 自動產生
 createButtons(413501, 413534, "class4135");
 createButtons(413601, 413634, "class4136");
 
 </script>
-
 </body>
 </html>

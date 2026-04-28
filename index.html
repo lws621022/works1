@@ -51,6 +51,16 @@ button:active{
   transform:scale(0.95);
 }
 
+button.disabled{
+  background:#9ca3af;
+  cursor:not-allowed;
+}
+
+button.disabled:hover{
+  background:#9ca3af;
+  transform:none;
+}
+
 #imageArea{
   margin-top:20px;
   display:flex;
@@ -95,7 +105,6 @@ button:active{
 <script>
 const maxImageCount = 4;
 
-// 檢查圖片是否存在
 function checkImage(path){
   return new Promise((resolve) => {
     let img = new Image();
@@ -105,9 +114,18 @@ function checkImage(path){
   });
 }
 
-// 找出某學號所有圖片
+function getFolder(id){
+  return id.toString().substring(0,4);
+}
+
+async function checkSubmitted(id){
+  let folder = getFolder(id);
+  let firstImagePath = folder + "/" + id + "-1.jpg";
+  return await checkImage(firstImagePath);
+}
+
 async function getStudentImages(id){
-  let folder = id.toString().substring(0,4);
+  let folder = getFolder(id);
   let images = [];
 
   for(let n = 1; n <= maxImageCount; n++){
@@ -122,7 +140,6 @@ async function getStudentImages(id){
   return images;
 }
 
-// 顯示該學號所有圖片
 async function show(id){
   let imageArea = document.getElementById("imageArea");
   imageArea.innerHTML = "";
@@ -142,8 +159,7 @@ async function show(id){
   });
 }
 
-// 建立按鈕 + 檢查是否繳交
-async function createButtons(start, end, containerId){
+function createButtons(start, end, containerId){
   let container = document.getElementById(containerId);
 
   for(let i = start; i <= end; i++){
@@ -151,12 +167,13 @@ async function createButtons(start, end, containerId){
     btn.innerText = i;
     btn.onclick = () => show(i);
 
-    let images = await getStudentImages(i);
-
-    if(images.length === 0){
-      btn.style.background = "#9ca3af";
-      btn.title = "未繳交";
-    }
+    checkSubmitted(i).then(exists => {
+      if(!exists){
+        btn.classList.add("disabled");
+        btn.disabled = true;
+        btn.title = "未繳交";
+      }
+    });
 
     container.appendChild(btn);
   }

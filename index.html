@@ -151,10 +151,20 @@ async function show(id){
     return;
   }
 
-  images.forEach(path => {
+  images.forEach((path, index) => {
+
+    // ⭐ 第二張開始才加分隔線
+    if(index > 0){
+      let hr = document.createElement("hr");
+      hr.style.width = "80%";
+      hr.style.border = "1px solid #ccc";
+      imageArea.appendChild(hr);
+    }
+
     let img = document.createElement("img");
     img.src = path;
     img.alt = id + " 的作品";
+
     imageArea.appendChild(img);
   });
 }

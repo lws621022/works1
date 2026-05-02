@@ -63,17 +63,37 @@ button.disabled:hover{
 
 #imageArea{
   margin-top:20px;
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:20px;
 }
 
-#imageArea img{
-  max-width:90%;
-  max-height:70vh;
+.image-row{
+  display:flex;
+  gap:20px;
+  justify-content:center;
+  align-items:flex-start;
+  margin:20px auto;
+  max-width:1200px;
+}
+
+.image-row img{
   border-radius:10px;
   box-shadow:0 4px 12px rgba(0,0,0,0.2);
+  object-fit:contain;
+  max-height:70vh;
+}
+
+.image-main{
+  width:80%;
+}
+
+.image-side{
+  width:20%;
+}
+
+.row-divider{
+  width:80%;
+  border:none;
+  border-top:2px solid #cbd5e1;
+  margin:30px auto;
 }
 
 .message{
@@ -103,7 +123,7 @@ button.disabled:hover{
 </div>
 
 <script>
-const maxImageCount = 4;
+const maxImageCount = 10;
 
 function checkImage(path){
   return new Promise((resolve) => {
@@ -151,22 +171,33 @@ async function show(id){
     return;
   }
 
-  images.forEach((path, index) => {
+  for(let i = 0; i < images.length; i += 2){
 
-    // ⭐ 第二張開始才加分隔線
-    if(index > 0){
+    if(i >= 2){
       let hr = document.createElement("hr");
-      hr.style.width = "80%";
-      hr.style.border = "1px solid #ccc";
+      hr.className = "row-divider";
       imageArea.appendChild(hr);
     }
 
-    let img = document.createElement("img");
-    img.src = path;
-    img.alt = id + " 的作品";
+    let row = document.createElement("div");
+    row.className = "image-row";
 
-    imageArea.appendChild(img);
-  });
+    let img1 = document.createElement("img");
+    img1.src = images[i];
+    img1.alt = id + " 的作品";
+    img1.className = "image-main";
+    row.appendChild(img1);
+
+    if(images[i + 1]){
+      let img2 = document.createElement("img");
+      img2.src = images[i + 1];
+      img2.alt = id + " 的作品";
+      img2.className = "image-side";
+      row.appendChild(img2);
+    }
+
+    imageArea.appendChild(row);
+  }
 }
 
 function createButtons(start, end, containerId){
